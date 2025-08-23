@@ -7,10 +7,9 @@ import CookieConsentBanner from "@/components/CookieConsentBanner";
 import ClientInitializer from "@/components/ClientInitializer";
 
 import "./globals.css";
+import "../styles/index.css";
 import EnhancedNavbar from "@/components/EnhancedNavbar";
 import Footer from "@/components/Footer";
-// import "../../styles/app.css";
-// import "../styles/index.scss";
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (

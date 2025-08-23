@@ -1,5 +1,18 @@
 @import "tailwindcss";
-/* @import "../styles/franchise.css"; */
+
+@theme {
+  --color-brand-blue: #1A73E8;
+  --color-brand-blue-dark: #1557B0;
+  --color-brand-blue-light: #E8F0FE;
+  --color-cleancraft-gold: #FFD700;
+  --color-cleancraft-darkgold: #B8860B;
+  --color-cleancraft-light: #FFF9E6;
+  --color-google-blue: #4285f4;
+  --color-google-red: #ea4335;
+  --color-google-green: #34a853;
+  --color-google-yellow: #fbbc04;
+  --color-google-gray: #5f6368;
+}
 
 :root {
   --background: #ffffff;
@@ -12,7 +25,6 @@
     --foreground: #ededed;
   }
 }
-
 
 body {
   background: var(--background);

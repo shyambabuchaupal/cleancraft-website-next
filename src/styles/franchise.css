@@ -1,6 +1,3 @@
-@import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
-
 @layer base {
   body {
     font-family: 'Inter', system-ui, sans-serif;
@@ -11,15 +8,33 @@
 
   /* Base styles for franchise page */
   .franchise-page {
-    @apply text-gray-600;
+    color: rgb(75 85 99);
+    /* text-gray-600 */
   }
 
   .franchise-page section {
-    @apply py-8 md:py-10 px-5 md:px-8;
+    padding-top: 2rem;
+    /* py-8 */
+    padding-bottom: 2rem;
+    padding-left: 1.25rem;
+    /* px-5 */
+    padding-right: 1.25rem;
+  }
+
+  @media (min-width: 768px) {
+    .franchise-page section {
+      padding-top: 2.5rem;
+      /* md:py-10 */
+      padding-bottom: 2.5rem;
+      padding-left: 2rem;
+      /* md:px-8 */
+      padding-right: 2rem;
+    }
   }
 
   .franchise-page section:nth-child(even) {
-    @apply bg-gray-50/50;
+    background-color: rgb(249 250 251 / 0.5);
+    /* bg-gray-50/50 */
   }
 
   /* Typography */
@@ -29,153 +44,455 @@
   .franchise-page h4,
   .franchise-page h5 {
     font-family: 'Inter', system-ui, sans-serif;
-    @apply text-gray-900;
+    color: rgb(17 24 39);
+    /* text-gray-900 */
   }
 
   .franchise-page h1 {
-    @apply text-3xl md:text-display-lg font-bold leading-tight;
+    font-size: 1.875rem;
+    /* text-3xl */
+    font-weight: 700;
+    /* font-bold */
+    line-height: 1.2;
+    /* leading-tight */
+  }
+
+  @media (min-width: 768px) {
+    .franchise-page h1 {
+      font-size: 3rem;
+      /* md:text-display-lg */
+      line-height: 3.75rem;
+    }
   }
 
   .franchise-page h2 {
-    @apply text-xl md:text-display-md font-bold mb-4 leading-snug;
+    font-size: 1.25rem;
+    /* text-xl */
+    font-weight: 700;
+    /* font-bold */
+    margin-bottom: 1rem;
+    /* mb-4 */
+    line-height: 1.375;
+    /* leading-snug */
+  }
+
+  @media (min-width: 768px) {
+    .franchise-page h2 {
+      font-size: 2.25rem;
+      /* md:text-display-md */
+      line-height: 2.75rem;
+    }
   }
 
   .franchise-page h3 {
-    @apply text-lg md:text-xl font-semibold mb-3;
+    font-size: 1.125rem;
+    /* text-lg */
+    font-weight: 600;
+    /* font-semibold */
+    margin-bottom: 0.75rem;
+    /* mb-3 */
+  }
+
+  @media (min-width: 768px) {
+    .franchise-page h3 {
+      font-size: 1.25rem;
+      /* md:text-xl */
+    }
   }
 
   .franchise-page h4 {
-    @apply text-lg md:text-xl font-semibold mb-3;
+    font-size: 1.125rem;
+    /* text-lg */
+    font-weight: 600;
+    /* font-semibold */
+    margin-bottom: 0.75rem;
+    /* mb-3 */
+  }
+
+  @media (min-width: 768px) {
+    .franchise-page h4 {
+      font-size: 1.25rem;
+      /* md:text-xl */
+    }
   }
 
   .franchise-page h5 {
-    @apply text-base md:text-lg font-semibold mb-2;
+    font-size: 1rem;
+    /* text-base */
+    font-weight: 600;
+    /* font-semibold */
+    margin-bottom: 0.5rem;
+    /* mb-2 */
+  }
+
+  @media (min-width: 768px) {
+    .franchise-page h5 {
+      font-size: 1.125rem;
+      /* md:text-lg */
+    }
   }
 
   .franchise-page p {
-    @apply text-sm md:text-base text-gray-600 leading-relaxed;
+    font-size: 0.875rem;
+    /* text-sm */
+    color: rgb(75 85 99);
+    /* text-gray-600 */
+    line-height: 1.625;
+    /* leading-relaxed */
+  }
+
+  @media (min-width: 768px) {
+    .franchise-page p {
+      font-size: 1rem;
+      /* md:text-base */
+    }
   }
 
   /* Container width */
   .franchise-page .container {
-    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+    max-width: 80rem;
+    /* max-w-7xl */
+    margin-left: auto;
+    /* mx-auto */
+    margin-right: auto;
+    padding-left: 1rem;
+    /* px-4 */
+    padding-right: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .franchise-page .container {
+      padding-left: 1.5rem;
+      /* sm:px-6 */
+      padding-right: 1.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .franchise-page .container {
+      padding-left: 2rem;
+      /* lg:px-8 */
+      padding-right: 2rem;
+    }
   }
 
   /* Custom utility classes */
   .gradient-text {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-brand-blue to-brand-blue;
+    background-clip: text;
+    color: transparent;
+    background-image: linear-gradient(to right, #1e40af, #1e3a8a);
   }
 
   .rating-badge {
-    @apply inline-flex items-center bg-cleancraft-gold text-white px-3 py-1 rounded-full text-sm font-medium;
+    display: inline-flex;
+    align-items: center;
+    background-color: #FFD700;
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 500;
   }
 
   /* Card styles */
   .franchise-card {
-    @apply bg-white rounded-xl shadow-sm border border-gray-100 p-6 md:p-8 transition-all duration-300;
+    background-color: white;
+    border-radius: 0.75rem;
+    /* rounded-xl */
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    /* shadow-sm */
+    border: 1px solid rgb(243 244 246);
+    /* border-gray-100 */
+    padding: 1.5rem;
+    /* p-6 */
+    transition: all 0.3s ease;
+  }
+
+  @media (min-width: 768px) {
+    .franchise-card {
+      padding: 2rem;
+      /* md:p-8 */
+    }
   }
 
   .franchise-card:hover {
-    @apply shadow-lg border-gray-200 transform -translate-y-1;
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    /* shadow-lg */
+    border-color: rgb(229 231 235);
+    /* border-gray-200 */
+    transform: translateY(-0.25rem);
+    /* -translate-y-1 */
   }
 
   /* Icon containers */
   .franchise-icon-container {
-    @apply h-12 w-12 rounded-full flex items-center justify-center mb-4;
+    height: 3rem;
+    /* h-12 */
+    width: 3rem;
+    /* w-12 */
+    border-radius: 50%;
+    /* rounded-full */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    /* mb-4 */
   }
 
   .franchise-icon-blue {
-    @apply bg-brand-blue/10 text-brand-blue;
+    background-color: rgb(30 64 175 / 0.1);
+    /* bg-brand-blue/10 */
+    color: #1e40af;
+    /* text-brand-blue */
   }
 
   .franchise-icon-red {
-    @apply bg-red-500/10 text-red-500;
+    background-color: rgb(239 68 68 / 0.1);
+    /* bg-red-500/10 */
+    color: rgb(239 68 68);
+    /* text-red-500 */
   }
 
   .franchise-icon-green {
-    @apply bg-green-500/10 text-green-500;
+    background-color: rgb(34 197 94 / 0.1);
+    /* bg-green-500/10 */
+    color: rgb(34 197 94);
+    /* text-green-500 */
   }
 
   .franchise-icon-yellow {
-    @apply bg-cleancraft-gold/10 text-cleancraft-gold;
+    background-color: rgb(255 215 0 / 0.1);
+    /* bg-cleancraft-gold/10 */
+    color: #FFD700;
+    /* text-cleancraft-gold */
   }
 
   /* Button styles */
   .franchise-button {
-    @apply text-sm md:text-base px-6 py-3 rounded-lg font-medium transition-all duration-300;
+    font-size: 0.875rem;
+    /* text-sm */
+    padding: 0.75rem 1.5rem;
+    /* px-6 py-3 */
+    border-radius: 0.5rem;
+    /* rounded-lg */
+    font-weight: 500;
+    /* font-medium */
+    transition: all 0.3s ease;
+  }
+
+  @media (min-width: 768px) {
+    .franchise-button {
+      font-size: 1rem;
+      /* md:text-base */
+    }
   }
 
   .franchise-button-primary {
-    @apply franchise-button bg-brand-blue text-white hover:bg-brand-blue-dark shadow-lg shadow-brand-blue/20;
+    background-color: #1e40af;
+    /* bg-brand-blue */
+    color: white;
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1), 0 10px 20px rgba(18, 88, 197, 0.2);
+  }
+
+  .franchise-button-primary:hover {
+    background-color: #1e3a8a;
+    /* hover:bg-brand-blue-dark */
   }
 
   .franchise-button-secondary {
-    @apply franchise-button bg-cleancraft-gold text-white hover:bg-cleancraft-darkgold shadow-lg shadow-cleancraft-gold/20;
+    background-color: #FFD700;
+    /* bg-cleancraft-gold */
+    color: white;
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1), 0 10px 20px rgba(201, 162, 39, 0.2);
+  }
+
+  .franchise-button-secondary:hover {
+    background-color: #B8860B;
+    /* hover:bg-cleancraft-darkgold */
   }
 
   /* Grid layouts */
   .franchise-grid-2 {
-    @apply grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    /* gap-8 */
+  }
+
+  @media (min-width: 768px) {
+    .franchise-grid-2 {
+      grid-template-columns: repeat(2, 1fr);
+      /* md:grid-cols-2 */
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .franchise-grid-2 {
+      gap: 3rem;
+      /* lg:gap-12 */
+    }
   }
 
   .franchise-grid-3 {
-    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    /* gap-8 */
+  }
+
+  @media (min-width: 768px) {
+    .franchise-grid-3 {
+      grid-template-columns: repeat(2, 1fr);
+      /* md:grid-cols-2 */
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .franchise-grid-3 {
+      grid-template-columns: repeat(3, 1fr);
+      /* lg:grid-cols-3 */
+      gap: 3rem;
+      /* lg:gap-12 */
+    }
   }
 
   .franchise-grid-4 {
-    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    /* gap-6 */
+  }
+
+  @media (min-width: 640px) {
+    .franchise-grid-4 {
+      grid-template-columns: repeat(2, 1fr);
+      /* sm:grid-cols-2 */
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .franchise-grid-4 {
+      grid-template-columns: repeat(4, 1fr);
+      /* lg:grid-cols-4 */
+      gap: 2rem;
+      /* lg:gap-8 */
+    }
   }
 
   /* Animations */
   .franchise-fade-in {
-    @apply animate-fade-in;
+    animation: fadeIn 0.6s ease-in-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(1.25rem);
+      /* 20px */
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   .franchise-pulse-soft {
-    @apply animate-[pulse_3s_cubic-bezier(0.4, 0, 0.6, 1)_infinite];
+    animation: pulseSoft 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  @keyframes pulseSoft {
+
+    0%,
+    100% {
+      opacity: 1;
+    }
+
+    50% {
+      opacity: 0.8;
+    }
   }
 
   /* Form elements */
   .franchise-input {
-    @apply w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-colors duration-200;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid rgb(229 231 235);
+    /* border-gray-200 */
+    transition: all 0.2s ease;
+  }
+
+  .franchise-input:focus {
+    outline: 2px solid rgb(30 64 175 / 0.2);
+    /* focus:ring-brand-blue/20 */
+    outline-offset: 0;
+    border-color: #1e40af;
+    /* focus:border-brand-blue */
   }
 
   .franchise-label {
-    @apply block text-sm font-medium text-gray-700 mb-1;
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: rgb(55 65 81);
+    /* text-gray-700 */
+    margin-bottom: 0.25rem;
   }
 
   /* Comparison table */
   .franchise-table {
-    @apply w-full border-collapse;
+    width: 100%;
+    border-collapse: collapse;
   }
 
   .franchise-table th {
-    @apply px-4 py-3 text-left bg-gray-50 font-semibold text-gray-700;
+    padding: 0.75rem 1rem;
+    text-align: left;
+    background-color: rgb(249 250 251);
+    /* bg-gray-50 */
+    font-weight: 600;
+    color: rgb(55 65 81);
+    /* text-gray-700 */
   }
 
   .franchise-table td {
-    @apply px-4 py-3 border-t border-gray-100;
+    padding: 0.75rem 1rem;
+    border-top: 1px solid rgb(243 244 246);
+    /* border-gray-100 */
   }
 
   /* Testimonial cards */
   .franchise-testimonial {
-    @apply p-6 bg-white rounded-xl shadow-sm border border-gray-100 transition-all duration-300;
+    padding: 1.5rem;
+    background-color: white;
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    border: 1px solid rgb(243 244 246);
+    transition: all 0.3s ease;
   }
 
   .franchise-testimonial:hover {
-    @apply shadow-lg border-gray-200;
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    border-color: rgb(229 231 235);
   }
 
   /* Stats grid */
   .franchise-stat {
-    @apply p-4 bg-white rounded-lg shadow-sm;
+    padding: 1rem;
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
   }
 
   .franchise-stat-number {
-    @apply text-3xl font-bold mb-1;
+    font-size: 1.875rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
   }
 
   .franchise-stat-label {
-    @apply text-sm text-gray-600;
+    font-size: 0.875rem;
+    color: rgb(75 85 99);
   }
 }

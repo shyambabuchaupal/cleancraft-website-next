@@ -1,5 +1,3 @@
-import "../../../styles/franchise.css";
-
 export default function FranchiseLayout({
   children,
 }: {

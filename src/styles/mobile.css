@@ -1,76 +1,94 @@
+@layer base {
+  /* Mobile-specific fixes for better compatibility */
 
-/* Mobile-specific fixes for better compatibility */
+  /* Prevent horizontal scrolling on mobile */
+  html,
+  body {
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100%;
+  }
 
-/* Prevent horizontal scrolling on mobile */
-html, body {
-  overflow-x: hidden;
-  width: 100%;
-  max-width: 100%;
-}
+  /* Fix viewport issues on mobile */
+  * {
+    box-sizing: border-box;
+  }
 
-/* Fix viewport issues on mobile */
-* {
-  box-sizing: border-box;
-}
+  /* Improve touch targets for mobile */
+  button,
+  a,
+  [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
 
-/* Improve touch targets for mobile */
-button, a, [role="button"] {
-  min-height: 44px;
-  min-width: 44px;
-}
+  /* Fix iOS safari 100vh issue */
+  .min-h-screen {
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+  }
 
-/* Fix iOS safari 100vh issue */
-.min-h-screen {
-  min-height: 100vh;
-  min-height: -webkit-fill-available;
-}
+  /* Fix mobile scrolling */
+  body {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: none;
+  }
 
-/* Fix mobile scrolling */
-body {
-  -webkit-overflow-scrolling: touch;
-  overscroll-behavior: none;
-}
+  /* Improve text rendering on mobile */
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
 
-/* Improve text rendering on mobile */
-body {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
-}
-
-/* Fix mobile zoom issues */
-input, select, textarea {
-  font-size: 16px;
-}
-
-/* Prevent zoom on input focus for iOS */
-@media screen and (max-width: 768px) {
-  input:focus,
-  select:focus,
-  textarea:focus {
+  /* Fix mobile zoom issues */
+  input,
+  select,
+  textarea {
     font-size: 16px;
   }
-  
-  /* Improved mobile typography */
-  h1 { font-size: 2rem !important; }
-  h2 { font-size: 1.75rem !important; }
-  h3 { font-size: 1.5rem !important; }
-  p { font-size: 1.125rem !important; }
-  
-  /* Reduced mobile padding */
-  .container {
-    padding-left: 0.75rem !important;
-    padding-right: 0.75rem !important;
-  }
-  
-  section {
-    padding-left: 1rem !important;
-    padding-right: 1rem !important;
-  }
-}
 
-/* Fix mobile keyboard issues */
-.mobile-keyboard-fix {
-  height: 100vh;
-  height: -webkit-fill-available;
+  /* Prevent zoom on input focus for iOS */
+  @media screen and (max-width: 768px) {
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      font-size: 16px;
+    }
+
+    /* Improved mobile typography */
+    h1 {
+      font-size: 2rem !important;
+    }
+
+    h2 {
+      font-size: 1.75rem !important;
+    }
+
+    h3 {
+      font-size: 1.5rem !important;
+    }
+
+    p {
+      font-size: 1.125rem !important;
+    }
+
+    /* Reduced mobile padding */
+    .container {
+      padding-left: 0.75rem !important;
+      padding-right: 0.75rem !important;
+    }
+
+    section {
+      padding-left: 1rem !important;
+      padding-right: 1rem !important;
+    }
+  }
+
+  /* Fix mobile keyboard issues */
+  .mobile-keyboard-fix {
+    height: 100vh;
+    height: -webkit-fill-available;
+  }
 }

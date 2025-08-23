@@ -18,7 +18,6 @@ import WhyCleancraft from "@/components/franchise/WhyCleancraft";
 import InTheHeadlines from "@/components/franchise/InTheHeadlines";
 import StickyBottomCTA from "@/components/franchise/StickyBottomCTA";
 // CSS import
-import "../../../styles/franchise.css";
 
 export default function FranchisePage() {
   return (

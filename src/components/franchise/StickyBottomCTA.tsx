@@ -28,7 +28,7 @@ const StickyBottomCTA = () => {
             </Button>
             <Button
               onClick={handleInquire}
-              className="flex-1 bg-brand-blue hover:bg-brand-blue-dark text-white flex items-center justify-center gap-2 py-3 rounded-lg text-base font-medium"
+              className="flex-1  bg-brand-blue hover:bg-brand-blue-dark text-white flex items-center justify-center gap-2 py-3 rounded-lg text-base font-medium"
             >
               <MessageCircle className="w-5 h-5" />
               Inquire Now
