@@ -1,11 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
-
-  turbopack: {
-    // Add valid TurbopackOptions properties here if needed
-  }
+  // Simple config for Tailwind CSS v4.0
+  // The PostCSS configuration in postcss.config.ts handles Tailwind processing
 };
 
 export default nextConfig;

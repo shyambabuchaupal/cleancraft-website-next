@@ -13,6 +13,7 @@ import YourFirstPickupEssentials from "../home/YourFirstPickupEssentials";
 import { countryConfig } from "@/hooks/use-country-config";
 import { cn } from "@/lib/utils";
 import { useStrapiFAQs } from "@/hooks/useStrapi";
+import { LoadingSpinner } from "../ui/loading-spinner";
 
 interface SectionWrapperProps {
   children: React.ReactNode;
