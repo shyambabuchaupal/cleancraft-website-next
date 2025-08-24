@@ -1,21 +1,15 @@
 // services/page.tsx
 import React from "react";
-import { ChevronRight, ArrowRight } from "lucide-react";
-import {
-  FaTshirt,
-  FaSoap,
-  FaBoxOpen,
-  FaRegSnowflake,
-  FaBroom,
-} from "react-icons/fa";
 import EnhancedNavbar from "@/components/EnhancedNavbar";
-import Footer from "@/components/Footer";
 import { EnhancedSEO } from "@/components/EnhancedSEO";
-import { useCountry } from "@/contexts/CountryContext";
-import { LoadingSpinner } from "@/components/ui/loading-spinner";
-import { toast } from "sonner";
 
-const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL;
+interface Service {
+  id: string | number;
+  name: string;
+  description: string;
+  price_from: number;
+  price_type: string;
+}
 
 async function fetchServices() {
   try {
@@ -72,7 +66,7 @@ export default async function Page({
       />
       <EnhancedNavbar />
       <main className="py-16 px-2 md:px-4">
-        {displayServices.map((service: any) => (
+        {displayServices.map((service: Service) => (
           <div key={service.id} className="bg-white p-4 mb-4 shadow rounded">
             <h3 className="text-lg font-semibold">{service.name}</h3>
             <p>{service.description}</p>

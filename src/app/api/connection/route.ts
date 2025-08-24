@@ -17,7 +17,7 @@ class ConnectionService {
 
   private readonly STRAPI_URL =
     process.env.STRAPI_URL || "http://localhost:1337/api";
-  private readonly STRAPI_TOKEN = process.env.STRAPI_TOKEN;
+  private readonly STRAPI_TOKEN = process.env.STRAPI_API_TOKEN;
   private readonly CHECK_INTERVAL = 5 * 60 * 1000; // 5 minutes
   private readonly INITIAL_TIMEOUT = 30000; // 30s for initial
   private readonly NORMAL_TIMEOUT = 10000; // 10s for subsequent checks
@@ -54,9 +54,9 @@ class ConnectionService {
 
       clearTimeout(timeoutId);
       return response.ok;
-    } catch (error: any) {
+    } catch (error: unknown) {
       clearTimeout(timeoutId);
-      if (error.name === "AbortError") {
+      if (error instanceof Error && error.name === "AbortError") {
         console.warn("⏱️ Connection attempt timed out");
       } else {
         console.error("❌ Connection attempt failed:", error);
@@ -149,9 +149,13 @@ const connectionService = ConnectionService.getInstance();
 
 // API route: GET /api/connection
 export async function GET() {
-  const success = await connectionService.checkConnection();
+  await connectionService.checkConnection();
+  const status = connectionService.getStatus();
+  
   return NextResponse.json({
-    success,
-    status: connectionService.getStatus(),
+    isConnected: status.isConnected,
+    error: status.error,
+    lastChecked: status.lastChecked,
+    retryCount: status.retryCount,
   });
 }

@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { useRouter, usePathname } from "next/navigation";
@@ -170,7 +171,7 @@ const HeroSection = () => {
           >
             <div className="my-auto">
               <RevolvingIcons />
-              <img
+              <Image
                 src={
                   pathCountry === "in"
                     ? "/lovable-uploads/Hero-India-removebg-preview.png"
@@ -179,10 +180,12 @@ const HeroSection = () => {
                 alt={`Laundry and Dry Cleaning - ${
                   pathCountry === "in" ? "India" : "Other Country"
                 }`}
+                width={280}
+                height={400}
                 className="mx-auto lg:mx-0 w-auto h-auto max-w-[280px] drop-shadow-lg relative z-10"
                 style={{ maxHeight: "60vh" }}
-                onError={(e) => {
-                  e.currentTarget.src = "/lovable-uploads/hero.png";
+                onError={() => {
+                  // Handle error if needed
                 }}
               />
             </div>

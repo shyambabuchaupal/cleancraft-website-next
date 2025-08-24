@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useCallback } from "react";
-import { EnhancedSEO } from "@/components/EnhancedSEO";
 import EnhancedBlogHero from "@/components/blog/EnhancedBlogHero";
 import ModernBlogFilters from "@/components/blog/ModernBlogFilters";
 import ModernBlogCard from "@/components/blog/ModernBlogCard";
@@ -37,18 +36,6 @@ export default function BlogPage() {
 
   return (
     <>
-      <EnhancedSEO
-        slug="/blog"
-        pageType="LocalBusiness"
-        defaultTitle="Laundry & Dry Cleaning Tips, Guides & Industry Insights"
-        defaultDescription="Expert tips on dry cleaning, wet cleaning, and garment care. Learn about fabric treatment, stain removal techniques, and professional laundry business insights."
-        customKeywords={[
-          "dry cleaning tips",
-          "wet cleaning guides",
-          "garment care advice",
-        ]}
-      />
-
       <div className="blog-page bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 min-h-screen">
         <BlogBreadcrumb />
         <EnhancedBlogHero />

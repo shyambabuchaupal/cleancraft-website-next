@@ -1,6 +1,8 @@
 import * as React from "react";
+import { useRouter } from "next/navigation";
 import BookingButton from "./BookingButton";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useCountry } from "@/contexts/CountryContext";
 import { FaCalendarCheck, FaBoxOpen, FaTag, FaDoorOpen } from "react-icons/fa";
 import { IconType } from "react-icons";
 
@@ -63,12 +65,27 @@ const DesktopStep: React.FC<Step> = ({ icon: Icon, title, description }) => (
 
 const YourFirstPickupEssentials: React.FC = () => {
   const isMobile = useIsMobile();
+  const router = useRouter();
+  const { currentCountry } = useCountry();
 
   const handleBookingClick = () => {
-    if (import.meta.env.DEV) {
+    console.log("=== BOOKING CLICK DEBUG ===");
+    console.log("Current Country:", currentCountry);
+    console.log("Type of currentCountry:", typeof currentCountry);
+
+    if (process.env.NODE_ENV === "development") {
       console.log("Booking initiated");
     }
-    // TODO: Add real booking action here
+
+    // Redirect to booking page
+    const countryCode = currentCountry?.toLowerCase() || "au";
+    const redirectUrl = `/${countryCode}/booking`;
+
+    console.log("Country Code:", countryCode);
+    console.log("Redirect URL:", redirectUrl);
+    console.log("=========================");
+
+    router.push(redirectUrl);
   };
 
   return (

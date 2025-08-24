@@ -19,6 +19,15 @@ import { useRouter } from "next/navigation";
 
 const CleanCraftIcon = "/lovable-uploads/cleancraft-icon.png";
 
+interface Service {
+  id: string | number;
+  name: string;
+  description: string;
+  price_from: number;
+  price_type: string;
+  slug?: string;
+}
+
 interface ServiceCardProps {
   name: string;
   description: string;
@@ -32,7 +41,6 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
   description,
   price_from,
   price_type,
-  icon: Icon,
 }) => {
   const { currentCountry } = useCountry();
   const countryCode = currentCountry?.toLowerCase() || "in";
@@ -143,13 +151,12 @@ const ServicesSection: React.FC = () => {
   const { currentCountry } = useCountry();
 
   const { data: strapiServices } = useStrapiServices();
-  const { isConnected } = useStrapiConnection();
   const [showAll, setShowAll] = useState(false);
   const router = useRouter();
   console.log("Current Country:", strapiServices);
   const countryCode = currentCountry?.toLowerCase() || "in";
   const currencySymbol = currencySymbols[countryCode] || "₹";
-  const displayServices = (strapiServices?.data || []).map((service: any) => {
+  const displayServices = (strapiServices || []).map((service: Service) => {
     let priceType = service.price_type?.trim()?.toLowerCase();
     if (!priceType) {
       const slug = service.slug?.toLowerCase() || "";
@@ -167,7 +174,7 @@ const ServicesSection: React.FC = () => {
     currentCountry ? `/${currentCountry.toLowerCase()}${path}` : path;
 
   return (
-    <div className="w-full px-2 md:px-4">
+    <div id="services" className="w-full px-2 md:px-4">
       {/* MOBILE */}
       <div className="lg:hidden">
         <div className="mx-auto bg-[#1E3A8A] rounded-3xl p-6">
@@ -181,7 +188,7 @@ const ServicesSection: React.FC = () => {
             Wide range of laundry service with free home pickup & delivery
           </p>
           <div className="flex overflow-x-auto gap-4 pb-6 snap-x snap-mandatory">
-            {displayServices.map((service: any) => (
+            {displayServices.map((service: Service) => (
               <div key={service.id} className="snap-start min-w-[320px]">
                 <ServiceCard {...service} icon={serviceIcons[service.name]} />
               </div>
@@ -191,7 +198,7 @@ const ServicesSection: React.FC = () => {
             onClick={() => {
               if (countryCode === "au")
                 window.open("https://cleancloudapp.com/s3/27145", "_blank");
-              else router.push(createLink("/book"));
+              else router.push(createLink("/booking"));
             }}
             className="bg-white text-[#1E3A8A] px-5 py-2 rounded-full font-semibold text-sm shadow-md hover:bg-gray-100 transition"
           >
@@ -224,7 +231,7 @@ const ServicesSection: React.FC = () => {
             onClick={() => {
               if (countryCode === "au")
                 window.open("https://cleancloudapp.com/s3/27145", "_blank");
-              else router.push(createLink("/book"));
+              else router.push(createLink("/booking"));
             }}
             className="bg-white text-[#1E3A8A] px-6 py-3 rounded-full font-semibold text-base shadow-md hover:bg-gray-100 transition mt-4"
           >
@@ -234,7 +241,7 @@ const ServicesSection: React.FC = () => {
 
         <div className="w-1/2 bg-gray-50 p-16 overflow-y-auto hide-scrollbar">
           <div className="space-y-6 max-w-xl">
-            {visibleServices.map((service: any) => (
+            {visibleServices.map((service: Service) => (
               <ServiceCard
                 key={service.id}
                 {...service}

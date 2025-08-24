@@ -33,6 +33,55 @@ const EnhancedNavbar: React.FC = () => {
     }
   };
 
+  const handleNavClick = (path: string, e: React.MouseEvent) => {
+    console.log(
+      "handleNavClick called with path:",
+      path,
+      "current pathname:",
+      pathname
+    );
+
+    if (path === "/#services") {
+      e.preventDefault();
+      setIsMenuOpen(false);
+
+      console.log("Attempting to scroll to services section");
+
+      const scrollToServices = () => {
+        const servicesElement = document.getElementById("services");
+        console.log("Services element found:", servicesElement);
+
+        if (servicesElement) {
+          console.log("Scrolling to services element");
+          servicesElement.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+          return true; // Success
+        } else {
+          console.log("Services element not found!");
+          return false; // Failed
+        }
+      };
+
+      // First try direct scroll (works if already on homepage)
+      const scrollSuccess = scrollToServices();
+
+      // If scroll failed and we're not on homepage, navigate then scroll
+      if (!scrollSuccess && !pathname.endsWith("/")) {
+        console.log("Direct scroll failed, navigating to homepage first");
+        sessionStorage.setItem("scrollTarget", "services");
+        router.push(createLink("/"));
+      } else if (!scrollSuccess) {
+        // We're on homepage but element not found, maybe not loaded yet
+        console.log("On homepage but element not found, trying with delay");
+        setTimeout(() => {
+          scrollToServices();
+        }, 500);
+      }
+    }
+  };
+
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 20);
     window.addEventListener("scroll", onScroll);
@@ -138,6 +187,7 @@ const EnhancedNavbar: React.FC = () => {
                 key={item.path}
                 href={createLink(item.path)}
                 className={commonLink}
+                onClick={(e) => handleNavClick(item.path, e)}
               >
                 {item.title}
               </Link>
@@ -230,7 +280,7 @@ const EnhancedNavbar: React.FC = () => {
                   key={item.path}
                   href={createLink(item.path)}
                   className="border-b border-gray-100 py-3 text-lg font-medium text-gray-700 hover:text-primary"
-                  onClick={() => setIsMenuOpen(false)}
+                  onClick={(e) => handleNavClick(item.path, e)}
                 >
                   {item.title}
                 </Link>

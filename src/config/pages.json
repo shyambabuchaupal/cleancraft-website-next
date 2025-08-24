@@ -343,7 +343,7 @@
    "au": {
       "pages": [
          {
-            "path": "/services",
+            "path": "#services",
             "navbar": true,
             "title": "Services",
             "order": 2,
@@ -375,6 +375,22 @@
    "in": {
       "pages": [
          {
+            "path": "/#services",
+            "navbar": true,
+            "title": "Services",
+            "order": 2,
+            "sections": [
+               {
+                  "type": "faq",
+                  "category": "services"
+               },
+               {
+                  "type": "testimonial",
+                  "category": "services"
+               }
+            ]
+         },
+         {
             "path": "/blog",
             "navbar": false,
             "title": "Blog",
@@ -400,7 +416,7 @@
          },
          {
             "path": "/services",
-            "navbar": true,
+            "navbar": false,
             "title": "Services",
             "order": 4,
             "sections": [

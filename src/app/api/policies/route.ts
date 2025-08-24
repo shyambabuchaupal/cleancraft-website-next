@@ -6,6 +6,8 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const country = searchParams.get("country") || "in";
 
+    console.log(`🔍 Fetching policies for country: ${country}`);
+
     if (!process.env.STRAPI_URL || !process.env.STRAPI_API_TOKEN) {
       console.error("Strapi URL or API Token missing in environment variables");
       return NextResponse.json(
@@ -14,24 +16,31 @@ export async function GET(request: Request) {
       );
     }
 
-    const res = await fetch(
-      `${process.env.STRAPI_URL}/policies?filters[country][code][$eq]=${country}&populate=*`,
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.STRAPI_API_TOKEN}`,
-        },
-      }
-    );
+    const strapiUrl = `${process.env.STRAPI_URL}/policies?filters[country][code][$eq]=${country}&populate=*`;
+    console.log(`📡 Strapi URL: ${strapiUrl}`);
+
+    const res = await fetch(strapiUrl, {
+      headers: {
+        Authorization: `Bearer ${process.env.STRAPI_API_TOKEN}`,
+      },
+    });
+
+    console.log(`📊 Strapi response status: ${res.status}`);
 
     if (!res.ok) {
       const text = await res.text();
-      console.error("Policies API error:", res.status, text);
+      console.error("❌ Strapi policies API error:", res.status, text);
       throw new Error(`Failed to fetch policies: ${res.status}`);
     }
 
     const data: { data: StrapiPolicy[] } = await res.json();
 
-    console.log("Policies data fetched:", JSON.stringify(data, null, 2));
+    console.log(`✅ Policies found for ${country}:`, data.data?.length || 0);
+    console.log("📋 Policies data:", JSON.stringify(data.data?.map(p => ({ 
+      name: p.name, 
+      slug: p.slug,
+      country: p.country 
+    })), null, 2));
 
     return NextResponse.json(data);
   } catch (err: unknown) {

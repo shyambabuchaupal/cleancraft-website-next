@@ -11,16 +11,17 @@ const TestimonialDisplay: React.FC<TestimonialDisplayProps> = ({
   testimonials,
   variant = "home",
 }) => {
+  // Don't show testimonials for courses and book pages
+  if (variant === "courses" || variant === "book") {
+    return null;
+  }
+
   if (!testimonials?.length) {
     return null;
   }
 
   const title =
-    variant === "home"
-      ? "Real Stories. Real Results"
-      : variant === "courses"
-      ? "Successful Students"
-      : "Happy Readers";
+    variant === "home" ? "Real Stories. Real Results" : "Happy Readers";
 
   return (
     <section className="w-full py-0 mx:py-10 px-4 md:px-8 bg-[#F8FAFC]">

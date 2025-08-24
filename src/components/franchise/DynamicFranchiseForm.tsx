@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -77,17 +78,17 @@ const DynamicFranchiseForm: React.FC<DynamicFranchiseFormProps> = ({
         functionPromise,
       ]);
 
-      // Errors को log करो लेकिन redirect रोको मत
-      if (insertResult.error)
-        console.error("Insert Error:", insertResult.error);
-      if (functionResult.error)
-        console.error("Function Error:", functionResult.error);
+      if (insertResult?.error) {
+        console.log("Insert Error:", JSON.stringify(insertResult.error));
+      }
+      if (functionResult?.error) {
+        console.log("Function Error:", JSON.stringify(functionResult.error));
+      }
 
-      // हमेशा redirect करो
       router.push(`/${countryCode.toLowerCase()}/thank-you`);
     } catch (error) {
-      console.error("Unexpected Error:", error);
-      // फिर भी redirect करो
+      console.log("Unexpected Error:", error?.toString() || "Unknown error");
+
       router.push(`/${countryCode.toLowerCase()}/thank-you`);
     } finally {
       setIsSubmitting(false);
@@ -97,10 +98,12 @@ const DynamicFranchiseForm: React.FC<DynamicFranchiseFormProps> = ({
   return (
     <div className="bg-white from-yellow-50 via-yellow-100 to-orange-50 p-2 shadow-sm">
       <div className="flex justify-center mb-2">
-        <img
+        <Image
           src="/lovable-uploads/cleancraft-icon.png"
           alt="Clean Craft Icon"
-          className="w-12 h-12 object-contain"
+          width={48}
+          height={48}
+          className="object-contain"
         />
       </div>
       <div className="text-black text-xl px-4 py-2 rounded-full text-center font-semibold mb-3 flex justify-center">

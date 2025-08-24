@@ -1,6 +1,7 @@
 "use client";
 
 import { useCountry } from "@/contexts/CountryContext";
+import { useEffect } from "react";
 import GuaranteeSection from "../home/GuaranteeSection";
 import HeroSection from "../home/HeroSection";
 import LaundryServiceFeatures from "../home/LaundryServiceFeatures";
@@ -36,6 +37,18 @@ const HomePage: React.FC = () => {
   const { getCountryByCode } = countryConfig;
 
   const countryData = currentCountry ? getCountryByCode(currentCountry) : null;
+
+  // Check for scroll target after navigation
+  useEffect(() => {
+    const scrollTarget = sessionStorage.getItem("scrollTarget");
+    if (scrollTarget) {
+      sessionStorage.removeItem("scrollTarget");
+      const element = document.getElementById(scrollTarget);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  }, []);
 
   // Fetch FAQs
   const { data: faqs, isLoading: faqsLoading } = useStrapiFAQs({

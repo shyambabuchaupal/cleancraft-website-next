@@ -30,11 +30,17 @@ const FAQs: React.FC<FAQsProps> = ({ category }) => {
   const { data, isLoading, error } = useQuery<FAQResponse>({
     queryKey: ["faqs", category, countryCode],
     queryFn: async () => {
-      const res = await fetch(
-        `/api/content/faqs?country=${countryCode}&category=${category}`
+      console.log(
+        `Fetching FAQs: /api/faqs?country=${countryCode}&category=${category}`
       );
+      const res = await fetch(
+        `/api/faqs?country=${countryCode}&category=${category}`
+      );
+      console.log("FAQ API Response status:", res.status);
       if (!res.ok) throw new Error("Failed to fetch FAQs");
-      return res.json();
+      const result = await res.json();
+      console.log("FAQ API Response data:", result);
+      return result;
     },
     enabled: !!countryCode,
   });
@@ -49,8 +55,15 @@ const FAQs: React.FC<FAQsProps> = ({ category }) => {
 
   if (error) {
     console.error("Error fetching FAQs:", error);
-    return null;
+    return (
+      <div className="py-4 px-4 bg-red-50 border border-red-200 rounded">
+        <p className="text-red-600">Failed to load FAQs: {error.message}</p>
+      </div>
+    );
   }
+
+  console.log("FAQ Data received:", data);
+  console.log("Valid FAQs count:", data?.data?.length);
 
   // ✅ Null answers filter only in production
   const validFaqs =
@@ -58,8 +71,16 @@ const FAQs: React.FC<FAQsProps> = ({ category }) => {
       ? data?.data?.filter((faq) => faq.answer !== null)
       : data?.data;
 
+  console.log("Valid FAQs after filtering:", validFaqs?.length);
+
   if (!validFaqs?.length) {
-    return null;
+    return (
+      <div className="py-4 px-4 bg-yellow-50 border border-yellow-200 rounded">
+        <p className="text-yellow-600">
+          No FAQs found for category: {category}
+        </p>
+      </div>
+    );
   }
 
   return <FAQDisplay faqs={validFaqs} variant={category} />;

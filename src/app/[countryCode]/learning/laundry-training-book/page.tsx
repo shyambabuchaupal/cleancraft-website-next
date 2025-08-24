@@ -9,7 +9,6 @@ import BookOffer from "@/components/book/Offer";
 import BookBestSeller from "@/components/book/BestSeller";
 import { EnhancedSEO } from "@/components/EnhancedSEO";
 import Layout from "@/components/home/Layout";
-import Testimonials from "@/components/shared/Testimonials";
 import FAQs from "@/components/shared/FAQs";
 
 export default function BookPage() {
@@ -30,11 +29,11 @@ export default function BookPage() {
         <BookFeatures />
         <BookBenefits />
         <BookAuthor />
-        <div className="bg-blue-50/30">
+        {/* <div className="bg-blue-50/30 hidden">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <Testimonials category="book" />
           </div>
-        </div>
+        </div> */}
         <BookOffer />
         <BookGuarantee />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

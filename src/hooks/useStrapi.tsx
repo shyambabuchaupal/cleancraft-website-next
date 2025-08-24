@@ -179,19 +179,30 @@ export function useStrapiPolicies() {
   return useQuery({
     queryKey: ["policies", countryCode],
     queryFn: async () => {
+      console.log(`🔍 Fetching policies for country: ${countryCode}`);
       const res = await fetch(`/api/policies?country=${countryCode}`);
+
+      console.log(`📊 API response status: ${res.status}`);
+
       if (!res.ok) {
         const text = await res.text();
-        console.error("Policies API error:", res.status, text);
+        console.error("❌ Policies API error:", res.status, text);
         return [];
       }
+
       const data = await res.json();
-      return (
-        data?.data?.map((policy: StrapiPolicy) => ({
-          ...policy,
-          country: policy.country,
-        })) || []
+      const policies = data?.data || [];
+
+      console.log(`✅ Policies received for ${countryCode}:`, policies.length);
+      console.log(
+        "📋 Policy slugs:",
+        policies.map((p: StrapiPolicy) => p.slug)
       );
+
+      return policies.map((policy: StrapiPolicy) => ({
+        ...policy,
+        country: policy.country,
+      }));
     },
     staleTime: 1000 * 60 * 5,
     enabled: !!currentCountry && isConnected && !isInitializing,

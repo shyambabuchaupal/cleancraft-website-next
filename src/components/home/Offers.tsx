@@ -134,7 +134,7 @@ const Offers = () => {
 
   const handleClaimNow = () => {
     const countryCode = currentCountry || "in";
-    router.push(`/${countryCode}/book`);
+    router.push(`/${countryCode}/booking`);
   };
 
   return (
