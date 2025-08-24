@@ -36,16 +36,6 @@ const BookingPage = () => {
   const router = useRouter();
   const isMobile = useIsMobile();
 
-  // Debug services data
-  console.log("Services data:", strapiServices);
-  console.log(
-    "Services count:",
-    Array.isArray(strapiServices) ? strapiServices.length : 0
-  );
-  console.log("Services loading:", isLoading);
-  console.log("Services error:", error);
-  console.log("Current country:", currentCountry);
-
   const totalSteps = 4;
 
   // Restore saved progress on mount
@@ -176,93 +166,43 @@ const BookingPage = () => {
     try {
       console.log("Submitting booking with payload:", payload);
 
-      // Use quick booking endpoint (guaranteed to work)
-      // Use server-side API route to avoid CORS issues
-      try {
-        console.log("Submitting booking via API route...");
+      // Try React.js style direct call first (this should work like React.js project)
+      const res = await fetch("/api/booking-react-style", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
 
-        const response = await fetch("/api/manual-booking", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(payload),
-        });
-
-        if (response.ok) {
-          const result = await response.json();
-          console.log("✅ Successfully saved to Strapi:", result);
-
-          toast.success(
-            "Booking submitted successfully! We'll contact you soon."
-          );
-          localStorage.removeItem("bookingProgress");
-
-          // Reset form
-          setCurrentStep(1);
-          setSelectedCity("");
-          setCustomCity("");
-          setSelectedServices([]);
-          setContactData({ name: "", email: "", phone: "", customCity: "" });
-
-          setTimeout(() => {
-            router.push(`/${currentCountry || "in"}`);
-          }, 2000);
-          return;
-        } else {
-          const errorData = await response.text();
-          console.error(
-            "Direct Strapi call failed:",
-            response.status,
-            errorData
-          );
-          throw new Error(`Strapi API error: ${response.status}`);
-        }
-      } catch (error) {
-        console.error("Failed to save to Strapi:", error);
-
-        // Try server-side API route as backup
-        try {
-          console.log("Trying server-side API route...");
-          const res = await fetch("/api/manual-booking", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(payload),
-          });
-
-          if (res.ok) {
-            const result = await res.json();
-            console.log("✅ Server-side API route successful:", result);
-
-            toast.success(
-              "Booking submitted successfully! We'll contact you soon."
-            );
-            localStorage.removeItem("bookingProgress");
-
-            // Reset form
-            setCurrentStep(1);
-            setSelectedCity("");
-            setCustomCity("");
-            setSelectedServices([]);
-            setContactData({ name: "", email: "", phone: "", customCity: "" });
-
-            setTimeout(() => {
-              router.push(`/${currentCountry || "in"}`);
-            }, 2000);
-            return;
-          } else {
-            const errorData = await res.json();
-            throw new Error(errorData.error || "Server-side API failed");
-          }
-        } catch (apiError) {
-          console.error("All booking methods failed:", apiError);
-          toast.error(
-            "Failed to submit booking. Please check your internet connection and try again."
-          );
-        }
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.error || "Failed to submit booking");
       }
+
+      const result = await res.json();
+      console.log("Booking submitted successfully:", result);
+
+      toast.success("Booking submitted successfully! We'll contact you soon.");
+      localStorage.removeItem("bookingProgress");
+
+      // Reset form
+      setCurrentStep(1);
+      setSelectedCity("");
+      setCustomCity("");
+      setSelectedServices([]);
+      setContactData({ name: "", email: "", phone: "", customCity: "" });
+
+      setTimeout(() => {
+        router.push(`/${currentCountry || "in"}`);
+      }, 2000);
+    } catch (error) {
+      console.error("Error submitting booking:", error);
+      toast.error(
+        `Failed to submit booking: ${
+          error instanceof Error ? error.message : "Unknown error"
+        }`
+      );
     } finally {
       setIsSubmitting(false);
     }

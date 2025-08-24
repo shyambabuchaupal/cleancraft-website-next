@@ -123,7 +123,7 @@ const HeroSection = () => {
                 if (pathCountry === "au") {
                   window.open("https://cleancloudapp.com/s3/27145", "_blank");
                 } else {
-                  router.push(`/${pathCountry}/book`);
+                  router.push(`/${pathCountry}/booking`);
                 }
               }}
               className="bg-[#E8F1FD] border border-[#488FED] rounded-full flex items-center justify-between p-1 pl-6 w-full max-w-[280px] lg:max-w-[320px] shadow-md transition-all duration-200 hover:scale-105 hover:bg-[#1869D3] hover:text-white mb-4"

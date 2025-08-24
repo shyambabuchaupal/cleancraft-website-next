@@ -1,22 +1,30 @@
 import { NextResponse } from "next/server";
 
-export async function GET(Request: NextResponse) {
+export async function GET(request: Request) {
   try {
-    const country = Request.headers.get("country") || "in";
- 
-    debugger;
+    const { searchParams } = new URL(request.url);
+    const country = searchParams.get("country") || "in";
 
-    const res = await fetch(`${process.env.STRAPI_URL}/services?country=${country}`, {
+    console.log("Fetching services for country:", country);
+
+    const res = await fetch(`${process.env.STRAPI_URL}/services?filters[country][code][$eq]=${country}&populate=*`, {
       headers: {
         Authorization: `Bearer ${process.env.STRAPI_API_TOKEN}`,
       },
     });
-    console.log("Fetching services from Strapi:", res.status);
+    
+    console.log("Strapi services response status:", res.status);
 
-    if (!res.ok) throw new Error(`Strapi status: ${res.status}`);
+    if (!res.ok) {
+      const errorText = await res.text();
+      console.error("Strapi error:", errorText);
+      throw new Error(`Strapi status: ${res.status}`);
+    }
 
     const data = await res.json();
-    return NextResponse.json(data);
+    console.log("Services data received:", data?.data?.length || 0, "services");
+    
+    return NextResponse.json(data?.data || []);
   } catch (err: any) {
     console.error("Error fetching services:", err);
     return NextResponse.json(

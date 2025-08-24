@@ -1,19 +1,20 @@
+// @ts-expect-error - qs module type declaration issue
 import qs from "qs";
 
 /* ------------------------------------------------------------------ */
 /*  Env vars (Next.js)                                                */
 /* ------------------------------------------------------------------ */
-const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337/api";
-const STRAPI_TOKEN = process.env.NEXT_PUBLIC_STRAPI_API_TOKEN;
+const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || process.env.STRAPI_URL || "https://cms.cleancraftapp.com/api";
+const STRAPI_TOKEN = process.env.NEXT_PUBLIC_STRAPI_API_TOKEN || process.env.STRAPI_API_TOKEN;
 
-if (!STRAPI_URL) throw new Error("NEXT_PUBLIC_STRAPI_URL is not defined");
+if (!STRAPI_URL) throw new Error("STRAPI_URL is not defined");
 // Token optional hai
-// if (!STRAPI_TOKEN) throw new Error("NEXT_PUBLIC_STRAPI_API_TOKEN is not defined");
+// if (!STRAPI_TOKEN) throw new Error("STRAPI_API_TOKEN is not defined");
 
 /* ------------------------------------------------------------------ */
 /*  Utility: recursively drop undefined                               */
 /* ------------------------------------------------------------------ */
-function cleanUndefined(obj: any): any {
+function cleanUndefined(obj: unknown): unknown {
   if (Array.isArray(obj)) return obj.map(cleanUndefined);
   if (obj && typeof obj === "object")
     return Object.fromEntries(
@@ -27,10 +28,10 @@ function cleanUndefined(obj: any): any {
 /* ------------------------------------------------------------------ */
 /*  ⭐ Custom stringify: keep '*' and ':' untouched                    */
 /* ------------------------------------------------------------------ */
-const stringifyParams = (params: Record<string, any>) =>
+const stringifyParams = (params: Record<string, unknown>) =>
   qs.stringify(cleanUndefined(params), {
     encodeValuesOnly: true,
-    encoder: (v) => {
+    encoder: (v: unknown) => {
       const str = String(v);
       if (str === "*" || str.includes(":")) return str; // keep Strapi wildcards
       return encodeURIComponent(str);
@@ -81,14 +82,15 @@ async function fetchWithTimeout(
     }
 
     return res;
-  } catch (err: any) {
+  } catch (err: unknown) {
     clearTimeout(id);
 
-    if (err.name === "AbortError") {
+    const error = err as Error;
+    if (error.name === "AbortError") {
       throw new Error(`Fetch timeout after ${timeout}ms → ${url}`);
     }
 
-    throw new Error(`Network or fetch error → ${url}: ${err.message}`);
+    throw new Error(`Network or fetch error → ${url}: ${error.message || 'Unknown error'}`);
   }
 }
 
@@ -104,9 +106,10 @@ async function retryFetch(
       console.log(`🔄 Attempt ${i}/${maxRetries} → ${url}`);
       const res = await fetchWithTimeout(url, options);
       return res;
-    } catch (err: any) {
-      lastErr = err;
-      console.warn(`❌ Attempt ${i} failed:`, err.message);
+    } catch (err: unknown) {
+      const error = err as Error;
+      lastErr = error;
+      console.warn(`❌ Attempt ${i} failed:`, error.message);
 
       if (i < maxRetries) {
         const wait = Math.min(1000 * 2 ** (i - 1), 5000);
@@ -124,7 +127,7 @@ async function retryFetch(
 /* ------------------------------------------------------------------ */
 export const getCollection = async <T>(
   endpoint: string,
-  params: Record<string, any> = {}
+  params: Record<string, unknown> = {}
 ): Promise<StrapiResponse<T>> => {
   const qsStr = stringifyParams(params);
   const url = `${STRAPI_URL}/${endpoint}${qsStr ? `?${qsStr}` : ""}`;
@@ -135,7 +138,7 @@ export const getCollection = async <T>(
 
 export const getSingle = async <T>(
   single: string,
-  params?: Record<string, any>
+  params?: Record<string, unknown>
 ): Promise<T> => {
   const qsStr = params ? `?${stringifyParams(params)}` : "";
   const url = `${STRAPI_URL}/${single}${qsStr}`;
@@ -147,7 +150,7 @@ export const getSingle = async <T>(
 
 export const createEntry = async <T>(
   collection: string,
-  data: Record<string, any>
+  data: Record<string, unknown>
 ): Promise<T> => {
   const url = `${STRAPI_URL}/${collection}`;
   console.log("🌐 Creating entry:", url, data);
@@ -162,7 +165,7 @@ export const createEntry = async <T>(
 export const updateEntry = async <T>(
   collection: string,
   id: string | number,
-  data: Record<string, any>
+  data: Record<string, unknown>
 ): Promise<T> => {
   const url = `${STRAPI_URL}/${collection}/${id}`;
   console.log("🌐 Updating entry:", url, data);

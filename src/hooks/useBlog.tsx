@@ -1,5 +1,4 @@
 import { useQuery } from "@tanstack/react-query";
-import { contentService } from "@/lib/strapi/services/content.service";
 import { useStrapiConnection } from "@/contexts/StrapiConnectionContext";
 import { useCountry } from "@/contexts/CountryContext";
 import { StrapiBlog, StrapiBlogCategory } from "@/types/strapi";
@@ -38,7 +37,31 @@ export function useBlogs(options?: {
 
   return useQuery<StrapiResponse<StrapiBlog>>({
     queryKey: key,
-    queryFn: () => contentService.getBlogs(countryCode, options),
+    queryFn: async () => {
+      const params = new URLSearchParams();
+      params.set("country", countryCode);
+
+      if (options?.featured !== undefined) {
+        params.set("featured", String(options.featured));
+      }
+      if (options?.category) {
+        params.set("category", options.category);
+      }
+      if (options?.page) {
+        params.set("page", String(options.page));
+      }
+      if (options?.pageSize) {
+        params.set("pageSize", String(options.pageSize));
+      }
+
+      const res = await fetch(`/api/blogs?${params.toString()}`);
+      if (!res.ok) {
+        const text = await res.text();
+        console.error("Blog API error:", res.status, text);
+        throw new Error(`Failed to fetch blogs: ${res.status}`);
+      }
+      return res.json();
+    },
     staleTime: 300_000, // 5 minutes
     enabled: isConnected && !isInitializing,
     retry: 2,
@@ -55,7 +78,14 @@ export function useBlogBySlug(slug: string) {
 
   return useQuery<StrapiBlog | null>({
     queryKey: key,
-    queryFn: () => contentService.getBlogBySlug(slug, countryCode),
+    queryFn: async () => {
+      const res = await fetch(`/api/blogs/${slug}?country=${countryCode}`);
+      if (!res.ok) {
+        if (res.status === 404) return null;
+        throw new Error(`Failed to fetch blog: ${res.status}`);
+      }
+      return res.json();
+    },
     staleTime: 300_000,
     enabled: !!slug && isConnected && !isInitializing,
     retry: 2,
@@ -68,7 +98,13 @@ export function useBlogCategories() {
 
   return useQuery<StrapiResponse<StrapiBlogCategory>>({
     queryKey: ["blogCategories"],
-    queryFn: () => contentService.getBlogCategories(),
+    queryFn: async () => {
+      const res = await fetch("/api/blog-categories");
+      if (!res.ok) {
+        throw new Error(`Failed to fetch blog categories: ${res.status}`);
+      }
+      return res.json();
+    },
     staleTime: 600_000, // 10 minutes
     enabled: isConnected && !isInitializing,
     retry: 2,

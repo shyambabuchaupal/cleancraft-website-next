@@ -51,7 +51,7 @@ export interface StrapiImage {
     id: number;
     documentId: string;
     title: string;
-    content: string;
+    content: unknown[]; // Rich text blocks array
     slug: string;
     publishedDate: string;
     seo_title?: string;
@@ -67,7 +67,7 @@ export interface StrapiImage {
       email?: string;
       bio?: string;
     };
-    image?: {
+    featured_image?: {
       id: number;
       name: string;
       alternativeText: string;

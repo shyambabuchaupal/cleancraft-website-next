@@ -37,15 +37,22 @@ function extractText(answer: any): string {
   return JSON.stringify(answer);
 }
 
-export function useFAQs(countryCode?: string) {
-  const queryParam = countryCode
+export function useFAQs(countryCode?: string, category?: string) {
+  // add country filter
+  const queryParamCountry = countryCode
     ? `&filters[country][code][$eq]=${countryCode}`
     : "";
 
-  const API_URL = `https://inviting-gem-d91a69b7bc.strapiapp.com/api/faqs?sort=order:asc${queryParam}&populate=country`;
+  // add category filter
+  const queryParamCategory =
+    category && category !== "all"
+      ? `&filters[category][$eq]=${category}`
+      : "";
+
+  const API_URL = `https://inviting-gem-d91a69b7bc.strapiapp.com/api/faqs?sort=order:asc${queryParamCountry}${queryParamCategory}&populate=country`;
 
   const { data, isLoading, error } = useQuery<FAQResponse>({
-    queryKey: ['faqs', countryCode],
+    queryKey: ['faqs', countryCode, category],
     queryFn: async () => {
       const res = await fetch(API_URL);
       if (!res.ok) {

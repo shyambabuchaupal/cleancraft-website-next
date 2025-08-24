@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useCallback } from "react";
-import Layout from "@/components/home/Layout";
 import { EnhancedSEO } from "@/components/EnhancedSEO";
 import EnhancedBlogHero from "@/components/blog/EnhancedBlogHero";
 import ModernBlogFilters from "@/components/blog/ModernBlogFilters";
@@ -37,7 +36,7 @@ export default function BlogPage() {
   const hasLatest = (latestQuickRes?.data?.length ?? 0) > 0;
 
   return (
-    <Layout showOfferCarousel={false}>
+    <>
       <EnhancedSEO
         slug="/blog"
         pageType="LocalBusiness"
@@ -126,6 +125,6 @@ export default function BlogPage() {
           </section>
         </div>
       </div>
-    </Layout>
+    </>
   );
 }

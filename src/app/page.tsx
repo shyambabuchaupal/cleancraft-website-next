@@ -1,7 +1,7 @@
 "use client";
 
 // External libraries
-import React from "react";
+import React, { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 // Next.js imports
@@ -25,19 +25,21 @@ export default function Page() {
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
 
-  // Handle redirect directly when query is successful
-  if (isSuccess && data?.country_code) {
-    router.replace(`/${data.country_code.toLowerCase()}`);
-  }
+  // ✅ Side effects move to useEffect
+  useEffect(() => {
+    if (isSuccess && data?.country_code) {
+      router.replace(`/${data.country_code.toLowerCase()}`);
+    }
+  }, [isSuccess, data, router]);
 
-  // Handle error case
-  if (error) {
-    console.error("Failed to fetch country:", error);
-    router.replace("/in"); // Default to India
-  }
+  useEffect(() => {
+    if (error) {
+      console.error("Failed to fetch country:", error);
+      router.replace("/in"); // Default to India
+    }
+  }, [error, router]);
 
   // Show loading state
-
   return (
     <div className="min-h-screen flex items-center justify-center">
       <LoadingSpinner />

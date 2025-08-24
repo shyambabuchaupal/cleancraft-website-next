@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, use } from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
-import Layout from "@/components/home/Layout";
 import { EnhancedSEO } from "@/components/EnhancedSEO";
 import { useBlogBySlug } from "@/hooks/useBlog";
 import { useCountry } from "@/contexts/CountryContext";
@@ -24,36 +24,20 @@ import {
   getStrapiImageAlt,
 } from "@/lib/strapi/utils/imageUtils";
 import BlogBreadcrumb from "@/components/blog/BlogBreadcrumb";
+import StrapiContentRenderer from "@/StrapiContentRenderer";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { BlocksRenderer } from "@strapi/blocks-react-renderer";
-
-const customRenderers = {
-  paragraph: ({ children }: any) => (
-    <p className="mb-6 text-gray-700">{children}</p>
-  ),
-  link: ({ children, url }: any) => (
-    <a
-      href={url}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="text-blue-600 underline"
-    >
-      {children}
-    </a>
-  ),
-};
 
 export default function BlogDetailPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
-  const { slug } = params;
+  const { slug } = use(params);
   const router = useRouter();
   const { currentCountry } = useCountry();
   const [copySuccess, setCopySuccess] = useState(false);
@@ -82,15 +66,17 @@ export default function BlogDetailPage({
     return format(date, "MMMM dd, yyyy");
   };
 
-  const imageUrl = getStrapiImageUrl((blog as any)?.featured_image);
-  const imageAlt = getStrapiImageAlt(
-    (blog as any)?.featured_image,
-    blog?.title || ""
-  );
+  const imageUrl = getStrapiImageUrl(blog?.featured_image);
+  const imageAlt = getStrapiImageAlt(blog?.featured_image, blog?.title || "");
+
+  // Debug image data
+  console.log("Blog data:", blog);
+  console.log("Blog featured_image:", blog?.featured_image);
+  console.log("Image URL:", imageUrl);
 
   if (isLoading) {
     return (
-      <Layout showOfferCarousel={false}>
+      <>
         <div className="bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 min-h-screen">
           <BlogBreadcrumb />
           <div className="max-w-4xl mx-auto px-4 py-8">
@@ -111,13 +97,13 @@ export default function BlogDetailPage({
             </div>
           </div>
         </div>
-      </Layout>
+      </>
     );
   }
 
   if (isError || !blog) {
     return (
-      <Layout showOfferCarousel={false}>
+      <>
         <div className="bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 min-h-screen">
           <BlogBreadcrumb />
           <div className="max-w-4xl mx-auto px-4 py-8">
@@ -138,12 +124,12 @@ export default function BlogDetailPage({
             </div>
           </div>
         </div>
-      </Layout>
+      </>
     );
   }
 
   return (
-    <Layout showOfferCarousel={false}>
+    <>
       <EnhancedSEO
         slug={`/blog/${blog.slug}`}
         pageType="Organization"
@@ -258,19 +244,21 @@ export default function BlogDetailPage({
 
               {imageUrl && (
                 <div className="rounded-xl overflow-hidden mb-8">
-                  <img
+                  <Image
                     src={imageUrl}
                     alt={imageAlt}
+                    width={800}
+                    height={400}
                     className="w-full h-auto object-cover"
-                    loading="lazy"
+                    priority
                   />
                 </div>
               )}
 
               <div className="article-content prose max-w-none">
-                <BlocksRenderer
-                  content={(blog.content || []) as any}
-                  blocks={customRenderers}
+                <StrapiContentRenderer
+                  content={blog.content}
+                  className="text-gray-700 leading-relaxed"
                 />
               </div>
 
@@ -304,6 +292,6 @@ export default function BlogDetailPage({
           </article>
         </div>
       </div>
-    </Layout>
+    </>
   );
 }

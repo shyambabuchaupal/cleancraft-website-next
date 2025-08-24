@@ -149,7 +149,7 @@ const EnhancedNavbar: React.FC = () => {
         <div className="hidden items-center gap-3 md:flex">
           <Button
             variant="outline"
-            className="border-2 border-[#1A73E8] text-[#1A73E8] hover:bg-[#1A73E8]/10"
+            className="border-2 hidden border-[#1A73E8] text-[#1A73E8] hover:bg-[#1A73E8]/10"
           >
             Login
           </Button>
@@ -241,7 +241,7 @@ const EnhancedNavbar: React.FC = () => {
             <div className="mt-6 flex flex-col gap-3">
               <Button
                 variant="outline"
-                className="w-full border-[#1A73E8] text-[#1A73E8] hover:bg-[#1A73E8]/10"
+                className="w-full hidden border-[#1A73E8] text-[#1A73E8] hover:bg-[#1A73E8]/10"
               >
                 Login
               </Button>

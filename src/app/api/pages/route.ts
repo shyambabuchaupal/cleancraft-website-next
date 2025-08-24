@@ -1,4 +1,5 @@
-import { loadYamlFile } from "@/lib/yaml-loader";
+import { promises as fs } from "fs";
+import path from "path";
 import { PageConfig, PageData } from "@/types/config";
 
 export class PageService {
@@ -15,12 +16,14 @@ export class PageService {
   }
 
   /**
-   * Ensure YAML config is loaded in memory
+   * Ensure JSON config is loaded in memory
    */
   private async ensureConfig(): Promise<PageConfig> {
     if (!this.pagesConfig) {
       try {
-        this.pagesConfig = await loadYamlFile<PageConfig>("/config/pages.yaml");
+        const configPath = path.join(process.cwd(), "public", "pages.json");
+        const fileContents = await fs.readFile(configPath, "utf8");
+        this.pagesConfig = JSON.parse(fileContents);
       } catch (error) {
         console.error("❌ Failed to load pages config:", error);
 
@@ -35,7 +38,7 @@ export class PageService {
         };
       }
     }
-    return this.pagesConfig;
+    return this.pagesConfig!;
   }
 
   /**
@@ -63,7 +66,7 @@ export class PageService {
     if (!page) {
       for (const parent of allPages) {
         if (parent.children) {
-          const childPage = parent.children.find((c) => {
+          const childPage = parent.children.find((c: PageData) => {
             const childSlug = c.path.replace(/^\//, "");
             return childSlug === normalizedSlug;
           });
@@ -148,3 +151,30 @@ export class PageService {
 }
 
 export const pageService = PageService.getInstance();
+
+// GET API Route
+export async function GET(request: Request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const slug = searchParams.get("slug") || "";
+    const country = searchParams.get("country") || "in";
+
+    const page = await pageService.getPage(slug, country);
+    
+    if (!page) {
+      return Response.json(
+        { error: "Page not found" },
+        { status: 404 }
+      );
+    }
+
+    return Response.json(page);
+  } catch (error) {
+    const err = error instanceof Error ? error : new Error('Unknown error');
+    console.error("Error in pages API:", err);
+    return Response.json(
+      { error: err.message || "Failed to fetch page" },
+      { status: 500 }
+    );
+  }
+}

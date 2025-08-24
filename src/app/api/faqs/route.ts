@@ -24,7 +24,7 @@ export async function GET(req: Request) {
 
     const data = await res.json();
 
-    // अगर Strapi से data नहीं मिला तो empty array return करो
+   
     return NextResponse.json(data || { data: [], meta: { pagination: {} } });
   } catch (err: any) {
     console.error("❌ FAQs API failed:", err);
